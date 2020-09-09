@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
     StyleSheet,
     Text,
@@ -8,7 +8,13 @@ import {
 } from 'react-native';
 
 const Adder = ({ onAddNew, isVisible }) => {
+    const inputRef = useRef(null);
+
     const [newTodo, setNewTodo] = useState('');
+
+    useEffect(() => {
+        inputRef.current.focus();
+    }, []);
 
     const handleChange = (input) => setNewTodo(input);
 
@@ -24,6 +30,7 @@ const Adder = ({ onAddNew, isVisible }) => {
         <View style={styles.mainWrap}>
             <View style={styles.inputWrap}>
                 <TextInput
+                    ref={inputRef}
                     placeholder="Type your todos here"
                     style={styles.input}
                     onChangeText={handleChange}
@@ -36,8 +43,7 @@ const Adder = ({ onAddNew, isVisible }) => {
                         title="Add"
                         onPress={handleOnPressAdd}
                     >
-                        {' '}
-                        ADD{' '}
+                        ADD
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -50,7 +56,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         justifyContent: 'flex-end',
-        marginBottom: 36,
+        marginBottom: 28,
         alignItems: 'center',
     },
     inputWrap: {
@@ -63,15 +69,17 @@ const styles = StyleSheet.create({
         width: '76%',
         height: 50,
         borderRadius: 3,
+        fontSize: 16,
     },
     buttonWrap: {
-        backgroundColor: '#36314b',
+        backgroundColor: 'rgba(47,50,78,0.62)',
         width: '14%',
-        height: 40,
+        height: 48,
         borderRadius: 3,
     },
     button: {
-        padding: 10,
+        paddingTop: 14,
+        fontWeight: '600',
         color: 'white',
         textAlign: 'center',
     },
