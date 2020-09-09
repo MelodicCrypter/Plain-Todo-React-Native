@@ -1,0 +1,66 @@
+{
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "node": true,
+    "jest": true
+  },
+  "plugins": [
+    "react",
+    "react-hooks",
+    "prettier"
+  ],
+  "extends": [
+    "airbnb",
+    "prettier",
+    "plugin:prettier/recommended",
+    "plugin:react/recommended",
+    "prettier/react"
+  ],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2018,
+    "allowImportExportEverywhere": false,
+    "codeFrame": false
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "flowtype": {
+      "onlyFilesWithFlowAnnotation": false
+    }
+  },
+  "rules": {
+    // React specifics
+    "react/no-unused-prop-types": 0,
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/button-has-type": 0,
+    "react/jsx-filename-extension": ["off"],
+    "react/prop-types": "warn",
+    // ESLint specifics
+    "max-len": ["error", {"code": 80}],
+    "prefer-promise-reject-errors": ["off"],
+    "no-nested-ternary": "off",
+    "no-return-assign": ["off"],
+    "no-shadow": "off",
+    "no-lonely-if": "warn",
+    "consistent-return": "off",
+    "no-use-before-define": "warn",
+    "no-underscore-dangle": "off",
+    "no-unused-vars": "warn",
+    "import/no-unresolved": "off",
+    "no-unused-expressions": "off",
+    "radix": "off",
+    "spaced-comment": "off",
+    "jsx-a11y/alt-text": "warn",
+    "jsx-a11y/click-events-have-key-events": "warn",
+    "jsx-a11y/no-static-element-interactions": "warn",
+    "jsx-a11y/no-noninteractive-element-interactions": "warn",
+    "prettier/prettier": "error",
+    "arrow-parens": ["error", "always"]
+  }
+}

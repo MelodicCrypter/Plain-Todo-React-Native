@@ -1,21 +1,99 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+    StyleSheet,
+    View,
+    KeyboardAvoidingView,
+    SafeAreaView,
+    TouchableWithoutFeedback,
+    Keyboard,
+    Text,
+} from 'react-native';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+import Adder from './components/normal/Adder';
+import Lister from './components/normal/Lister';
 
+const App = () => {
+    const [allTodos, setAllTodos] = useState([]);
+    const [showDef, setShowDef] = useState(true);
+
+    useEffect(() => {
+        if (allTodos.length > 0) setShowDef(false);
+    }, []);
+
+    useEffect(() => {
+        if (allTodos.length === 0) setShowDef(true);
+    }, [allTodos]);
+
+    // Main Functions
+    const handleAddNewBtnClick = () => setShowDef(false);
+    const handleAddNewTodo = (newlyAddedTodoTitle) => {
+        setAllTodos(getTodosAfterMerge(newlyAddedTodoTitle));
+    };
+    const handleDeleteTodo = async (id) => {
+        const finalTodos = await getTodosAfterDelete(id);
+        setAllTodos(finalTodos);
+    };
+
+    // Helpers
+    const getTodosAfterDelete = (id) =>
+        allTodos.filter((todo) => todo.id !== id);
+    const getTodosAfterMerge = (todoTitle) => {
+        return [
+            ...allTodos,
+            { id: Math.random().toString(), value: todoTitle },
+        ];
+    };
+
+    // Main: return text only if list is empty
+    return showDef ? (
+        <View style={styles.emptyDataWrap}>
+            <Text style={styles.emptyText} onPress={handleAddNewBtnClick}>
+                List is empty, Add New
+            </Text>
+            <StatusBar style="auto" />
+        </View>
+    ) : (
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : null}
+            style={styles.firstLayerWrap}
+        >
+            <SafeAreaView style={styles.secondLayerWrap}>
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    <View style={styles.mainInnerWrap}>
+                        <Lister data={allTodos} onDelete={handleDeleteTodo} />
+                        <Adder onAddNew={handleAddNewTodo} />
+                    </View>
+                </TouchableWithoutFeedback>
+            </SafeAreaView>
+
+            <StatusBar style="auto" />
+        </KeyboardAvoidingView>
+    );
+};
+
+// Styles for this component
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    firstLayerWrap: {
+        flex: 1,
+    },
+    secondLayerWrap: {
+        flex: 1,
+    },
+    mainInnerWrap: {
+        padding: 10,
+        flex: 1,
+        justifyContent: 'flex-end',
+    },
+    emptyDataWrap: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    emptyText: {
+        fontWeight: '500',
+        fontSize: 15,
+    },
 });
+
+export default App;
