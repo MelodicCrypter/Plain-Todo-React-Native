@@ -12,10 +12,13 @@ import {
 
 import Adder from './components/normal/Adder';
 import Lister from './components/normal/Lister';
+import StringEditor from './components/common/StringEditor';
 
 const App = () => {
     const [allTodos, setAllTodos] = useState([]);
     const [showDef, setShowDef] = useState(true);
+    const [isEditing, setIsEditing] = useState(false);
+    const [toBeEdited, setToBeEdited] = useState('test string');
 
     useEffect(() => {
         if (allTodos.length > 0) setShowDef(false);
@@ -33,6 +36,9 @@ const App = () => {
     const handleDeleteTodo = async (id) => {
         const finalTodos = await getTodosAfterDelete(id);
         setAllTodos(finalTodos);
+    };
+    const handleEditTodo = (id) => {
+        setIsEditing(true);
     };
 
     // Helpers
@@ -61,8 +67,19 @@ const App = () => {
             <SafeAreaView style={styles.secondLayerWrap}>
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <View style={styles.mainInnerWrap}>
-                        <Lister data={allTodos} onDelete={handleDeleteTodo} />
+                        <Lister
+                            data={allTodos}
+                            onDelete={handleDeleteTodo}
+                            onEdit={handleEditTodo}
+                        />
                         <Adder onAddNew={handleAddNewTodo} />
+
+                        {isEditing && (
+                            <StringEditor
+                                currentString={toBeEdited}
+                                visible={isEditing}
+                            />
+                        )}
                     </View>
                 </TouchableWithoutFeedback>
             </SafeAreaView>
