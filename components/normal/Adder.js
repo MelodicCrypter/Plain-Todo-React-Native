@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
 } from 'react-native';
 
-const Adder = ({ onAddNew, isVisible }) => {
+const Adder = ({ onAddNew }) => {
     const inputRef = useRef(null);
 
     const [newTodo, setNewTodo] = useState('');
