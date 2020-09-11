@@ -18,7 +18,7 @@ const App = () => {
     const [allTodos, setAllTodos] = useState([]);
     const [showDef, setShowDef] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
-    const [toBeEdited, setToBeEdited] = useState('test string');
+    const [toBeEdited, setToBeEdited] = useState({ id: '', value: '' });
 
     useEffect(() => {
         if (allTodos.length > 0) setShowDef(false);
@@ -37,8 +37,25 @@ const App = () => {
         const finalTodos = await getTodosAfterDelete(id);
         setAllTodos(finalTodos);
     };
-    const handleEditTodo = (id) => {
+    const handleEditClick = (id, value) => {
         setIsEditing(true);
+        setToBeEdited({ id, value });
+    };
+    const handleEditTodo = (value) => {
+        if (value === '') {
+            setIsEditing(false);
+            return;
+        }
+
+        const newTodos = allTodos.map((todo) => {
+            if (todo.id === toBeEdited.id) {
+                todo.value = value;
+            }
+
+            return todo;
+        });
+        setAllTodos(newTodos);
+        setIsEditing(false);
     };
 
     // Helpers
@@ -70,14 +87,21 @@ const App = () => {
                         <Lister
                             data={allTodos}
                             onDelete={handleDeleteTodo}
-                            onEdit={handleEditTodo}
+                            onEditClick={handleEditClick}
                         />
-                        <Adder onAddNew={handleAddNewTodo} />
+
+                        {!isEditing && (
+                            <Adder
+                                onAddNew={handleAddNewTodo}
+                                dataEmpty={allTodos.length === 0 && true}
+                            />
+                        )}
 
                         {isEditing && (
                             <StringEditor
-                                currentString={toBeEdited}
+                                currentString={toBeEdited.value}
                                 visible={isEditing}
+                                onEdit={handleEditTodo}
                             />
                         )}
                     </View>

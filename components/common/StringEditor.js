@@ -5,10 +5,11 @@ import {
     View,
     TextInput,
     TouchableOpacity,
+    TouchableWithoutFeedback,
     Modal,
 } from 'react-native';
 
-const StringEditor = ({ currentString, visible }) => {
+const StringEditor = ({ currentString, visible, onEdit }) => {
     const inputRef = useRef(null);
 
     const [finalString, setFinalString] = useState(currentString);
@@ -19,50 +20,48 @@ const StringEditor = ({ currentString, visible }) => {
     }, []);
 
     const handleChange = (input) => setFinalString(input);
-
-    const handleOnPressAdd = () => {
-        setIsVisible(false);
-        // If new is empty
-        // if (newTodo === '') return;
-        //
-        // onAddNew(newTodo);
-        // setNewTodo('');
+    const handleOnPressOuter = () => onEdit('');
+    const handleOnPressSave = () => {
+        if (finalString === '') return;
+        onEdit(finalString);
     };
 
     return (
-        <View style={styles.mainWrap}>
-            <Modal animationType="slide" transparent visible={isVisible}>
-                <View style={styles.mainWrap}>
-                    <View style={styles.modalStyle}>
-                        <View style={styles.inputWrap}>
-                            <TextInput
-                                ref={inputRef}
-                                style={styles.input}
-                                onChangeText={handleChange}
-                                value={finalString}
-                            />
+        <Modal animationType="slide" transparent visible={visible}>
+            <TouchableOpacity
+                style={styles.mainWrap}
+                activeOpacity={1}
+                onPress={handleOnPressOuter}
+            >
+                <View style={styles.modalStyle}>
+                    <View style={styles.inputWrap}>
+                        <TextInput
+                            ref={inputRef}
+                            style={styles.input}
+                            onChangeText={handleChange}
+                            value={finalString}
+                        />
 
-                            <TouchableOpacity style={styles.buttonWrap}>
-                                <Text
-                                    style={styles.button}
-                                    title="Add"
-                                    onPress={handleOnPressAdd}
-                                >
-                                    SAVE
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
+                        <TouchableOpacity style={styles.buttonWrap}>
+                            <Text
+                                style={styles.button}
+                                title="Add"
+                                onPress={handleOnPressSave}
+                            >
+                                SAVE
+                            </Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
-            </Modal>
-        </View>
+            </TouchableOpacity>
+        </Modal>
     );
 };
 
 const styles = StyleSheet.create({
     mainWrap: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: 'rgba(38,38,41,0.56)',
         justifyContent: 'center',
         alignItems: 'center',
     },

@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
 } from 'react-native';
 
-const Lister = ({ data, onDelete, onEdit }) => {
+const Lister = ({ data, onDelete, onEditClick }) => {
     return (
         <FlatList
             keyExtractor={(item, indx) => item.id}
@@ -20,7 +20,7 @@ const Lister = ({ data, onDelete, onEdit }) => {
                         <View style={styles.optionsWrap}>
                             <Text
                                 style={styles.optionsText}
-                                onPress={() => onEdit(item.id)}
+                                onPress={() => onEditClick(item.id, item.value)}
                             >
                                 Edit |
                             </Text>

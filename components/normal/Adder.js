@@ -7,13 +7,13 @@ import {
     TouchableOpacity,
 } from 'react-native';
 
-const Adder = ({ onAddNew }) => {
+const Adder = ({ onAddNew, dataEmpty }) => {
     const inputRef = useRef(null);
 
     const [newTodo, setNewTodo] = useState('');
 
     useEffect(() => {
-        inputRef.current.focus();
+        if (dataEmpty) inputRef.current.focus();
     }, []);
 
     const handleChange = (input) => setNewTodo(input);
